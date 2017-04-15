@@ -10,7 +10,6 @@ import matplotlib.gridspec as gridspec
 
 
 def display_grid(images):
-
     grid = gridspec.GridSpec(5, 5, top=1., bottom=0., right=1., left=0., hspace=0., wspace=0.)
     count = 0
     dim = (100,100)
@@ -23,9 +22,6 @@ def display_grid(images):
         ax.set_yticks([])
     plt.show()
                                     
-
-
-
 train_images_path = "Eigenfaces/Train/"
 train_path_list = []
 for files in os.listdir(train_images_path):
@@ -38,20 +34,7 @@ images = np.empty(len(train_path_list),dtype=object)
 for n in range(0, len(train_path_list)):
     images[n] = cv2.imread(os.path.join(train_images_path,train_path_list[n]))
 
-display_grid(images)
+#print(np.ravel(images[0]))
+#display_grid(images)
 
-
-
-#grid = gridspec.GridSpec(5, 5, top=1., bottom=0., right=1., left=0., hspace=0., wspace=0.)
-#count = 0
-#dim = (100,100)
-#for g in grid:
-#    ax = plt.subplot(g)
-#    resized = cv2.resize(images[count], dim, interpolation= cv2.INTER_AREA)
-#    count = count + 1
-#    ax.imshow(resized)
-#    ax.set_xticks([])
-#    ax.set_yticks([])
-#plt.show()
-    
 
