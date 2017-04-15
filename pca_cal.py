@@ -20,7 +20,8 @@ class Eigenfaces:
         self.images_path = []
         self.displaygrid = False
         self.display = False
-        self.displayeigen = True
+        self.displayeigen = False
+        self.displayreconstruct = True
         self.main_function()
     
     def main_function(self):
@@ -37,8 +38,21 @@ class Eigenfaces:
        
         if self.displayeigen:
             self.display_eigenface(eigen_face)
+  
+        if self.displayreconstruct:
+            # For k=2
+            self.display_reconstruct(eigen_face,weight,mean_face,2)
+            # For k=5
+            self.display_reconstruct(eigen_face,weight,mean_face,5)
+            # For k=7
+            self.display_reconstruct(eigen_face,weight,mean_face,15)
 
-    
+               
+    def reconstruct(self,img_ind, eigen_face,weight,mean_face,npcs):
+            
+        reconstruct = mean_face + np.dot(weight[img_ind,0:npcs], eigen_face[:,0:npcs].T)
+        return reconstruct
+
     def pca_calculation(self,images_array):
         
         mean_face = np.mean(images_array,0)
@@ -82,6 +96,20 @@ class Eigenfaces:
         for g in grid:
             ax = plt.subplot(g)
             resized = cv2.resize(eigen_face[:,count].reshape(425,425),dim,interpolation=cv2.INTER_AREA)
+            count = count + 1
+            ax.imshow(resized,cmap='gray')
+            ax.set_xticks([])
+            ax.set_yticks([])
+        plt.show()
+
+    def display_reconstruct(self,eigen_face,weight,mean_face,iteration):
+        
+        dim = (100,100)
+        grid = gridspec.GridSpec(5, 5, top=1., bottom=0., right=1., left=0., hspace=0., wspace=0.)
+        count = 0
+        for g in grid:
+            ax = plt.subplot(g)
+            resized = cv2.resize(self.reconstruct(count,eigen_face,weight,mean_face,iteration).reshape(425,425), dim,interpolation=cv2.INTER_AREA)
             count = count + 1
             ax.imshow(resized,cmap='gray')
             ax.set_xticks([])
